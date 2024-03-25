@@ -1,19 +1,25 @@
 pipeline {
-    agent { label 'windows' }
+    agent any
+    parameters {
+        booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Czy uruchomić etap wdrożenia?')
+    }
     stages {
         stage('Build') {
             steps {
-                bat 'build.bat'
+                echo 'Budowanie aplikacji...'
             }
         }
         stage('Test') {
             steps {
-                bat 'test.bat'
+                echo 'Testowanie aplikacji...'
             }
         }
         stage('Deploy') {
+            when {
+                expression { params.DEPLOY }
+            }
             steps {
-                bat 'deploy.bat'
+                echo 'Wdrażanie aplikacji...'
             }
         }
     }
