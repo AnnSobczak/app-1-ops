@@ -1,13 +1,19 @@
 pipeline {
-    agent any
-    parameters {
-        string(name: 'GREETING', defaultValue: 'Hello', description: 'The greeting message')
-        choice(name: 'BRANCH', choices: ['master', 'dev'], description: 'Branch to build')
-    }
+    agent { label 'windows' }
     stages {
-        stage('Example') {
+        stage('Build') {
             steps {
-                echo "${params.GREETING}, we are building the ${params.BRANCH} branch."
+                bat 'build.bat'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'test.bat'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                bat 'deploy.bat'
             }
         }
     }
